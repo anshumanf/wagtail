@@ -137,7 +137,10 @@ Changelog
 ~~~~~~~~~~~~~~~~~~
 
  * Fix: Pin Beautiful Soup to 4.6.0 due to further regressions in formatting empty elements (Matt Westcott)
+<<<<<<< HEAD
  * Fix: Prevent AppRegistryNotReady error when wagtail.contrib.sitemaps is in INSTALLED_APPS (Matt Westcott)
+=======
+>>>>>>> Add release notes for 2.2.1
 
 
 2.2 (10.08.2018)
