@@ -61,10 +61,15 @@ def serve(request, document_id, document_filename):
         # Fall back on pre-sendfile behaviour of reading the file content and serving it
         # as a StreamingHttpResponse
 
-        wrapper = FileWrapper(doc.file)
-        response = StreamingHttpResponse(wrapper, content_type='application/octet-stream')
+        import mimetypes
 
-        response['Content-Disposition'] = 'attachment; filename=%s' % doc.filename
+        (content_type, _) = mimetypes.guess_type(doc.filename)
+
+        wrapper = FileWrapper(doc.file)
+        response = StreamingHttpResponse(wrapper, content_type=content_type if content_type is not None else 'application/octet-stream')
+
+        if content_type != 'image/svg+xml':
+          response['Content-Disposition'] = 'attachment; filename=%s' % doc.filename
 
         # FIXME: storage backends are not guaranteed to implement 'size'
         response['Content-Length'] = doc.file.size
