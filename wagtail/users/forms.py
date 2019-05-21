@@ -178,15 +178,15 @@ class UserForm(UsernameForm):
 class UserCreationForm(UserForm):
     class Meta:
         model = User
-        fields = set([User.USERNAME_FIELD]) | standard_fields | custom_fields
+        fields = set([User.USERNAME_FIELD, "is_active"]) | standard_fields | custom_fields
+        fields = fields - set(['id', 'email', 'groups'])
+        fields = fields - set(['is_active', 'is_superuser'])
         widgets = {
             'groups': forms.CheckboxSelectMultiple
         }
 
 
 class UserEditForm(UserForm):
-    password_required = False
-
     def __init__(self, *args, **kwargs):
         editing_self = kwargs.pop('editing_self', False)
         super().__init__(*args, **kwargs)
@@ -197,7 +197,9 @@ class UserEditForm(UserForm):
 
     class Meta:
         model = User
-        fields = set([User.USERNAME_FIELD, "is_active"]) | standard_fields | custom_fields
+        fields = set([User.USERNAME_FIELD]) | standard_fields | custom_fields
+        fields = fields - set(['id', 'email', 'groups'])
+        fields = fields - set(['is_active', 'is_superuser'])
         widgets = {
             'groups': forms.CheckboxSelectMultiple
         }
@@ -402,11 +404,9 @@ class PreferredLanguageForm(forms.ModelForm):
 
 
 class EmailForm(forms.ModelForm):
-    email = forms.EmailField(required=True, label=_('Email'))
-
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ()
 
 
 def _get_time_zone_choices():

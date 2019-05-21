@@ -102,7 +102,7 @@ def popular_tags_for_model(model, count=10):
         taggit_taggeditem_items__content_type=content_type
     ).annotate(
         item_count=Count('taggit_taggeditem_items')
-    ).order_by('-item_count')[:count]
+    )
 
 
 def users_with_page_permission(page, permission_type, include_superusers=True):
